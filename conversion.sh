@@ -1,4 +1,5 @@
 #!/bin/bash
+#DSL
 
 echo "Please enter your first and last name."
 read fname lname
