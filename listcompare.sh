@@ -1,4 +1,5 @@
 #!/bin/bash
+#DSL
 
 echo 'How many integers do you have?'
 read total
