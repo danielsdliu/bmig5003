@@ -2,7 +2,7 @@
 
 # Goal is to create a FSM but more easily readable and adaptable to reconfiguration
 
-# create state functions.  This way if you want to change them it's more obvious where to change it.
+# Create state functions.  This way if you want to change them it's more obvious where to change it.
 def state1(step):
     if step == "1":
         return "q4"
@@ -32,6 +32,7 @@ def state3(step):
     else:
         return "invalid"
 
+
 def state4(step):
     if step == "1":
         return "q1"
@@ -55,28 +56,25 @@ def stateeval(state, delta):
         print("Invalid state")
 
 
-
-import sys
-
 string = str(input("Enter your input string: \n"))
 
 # trim any spaces and end line
 string = string.replace(" ", "")
 string = string.replace("\n", "")
 
-#print(string)
+# print(string)
 
 # define start state
-#token = "q1"
+# token = "q1"
 i = 0
 steps = ["q1"]
 
 # check your alphabet:
 while i < len(str(string)):
-    step = str(string)[i]
-#    token = stateeval(token, step)
-#    steps.append(str(token))
-    steps.append(stateeval(steps[i], step))
+    move = str(string)[i]
+    #    token = stateeval(token, step)
+    #    steps.append(str(token))
+    steps.append(stateeval(steps[i], move))
     i += 1
 
 print("The moves are as follows:")
@@ -87,7 +85,7 @@ if steps[-1] == "q4":
 else:
     print("Your string was rejected.")
 
-#if token == "q4":
+# if token == "q4":
 #    print("Your string was accepted.")
-#else:
+# else:
 #    print("Your string was rejected.")
