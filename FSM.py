@@ -1,6 +1,11 @@
 # DSL
 
-# Goal is to create a FSM but more easily readable and adaptable to reconfiguration
+# Goal is to create a FSM but more easily readable and adaptable to reconfiguration.
+
+# So the hard part was actually the set theory to convert the NDA to a DFA.  Because of the way q1 and q3 are
+# defined, the epsilon transition doesn't actually do anything (i.e. regular expression of accepted values does not
+# change), but I thought it useful to work through the programming anyways so there is a state q1q3 function that
+# ends up having the same output states as both q1 and q3.
 
 # Create state functions.  This way if you want to change them it's more obvious where to change it.
 def state1(step):
@@ -8,18 +13,15 @@ def state1(step):
         return "q4"
     elif step == "0":
         return "q3"
-    # epsilon allows any input and just moves to q3
     else:
-        return "q3"
+        return "invalid state"
 
 
 def state2(step):
     if step == "1":
-        return "q1"
+        return "q1q3"
     elif step == "0":
         return "q2"
-    # Our alphabet only allows 1 and 0s (and epsilon, but only for q1) so this will break the loop to return a
-    # rejection.
     else:
         return "Invalid state"
 
@@ -35,9 +37,18 @@ def state3(step):
 
 def state4(step):
     if step == "1":
-        return "q1"
+        return "q1q3"
     elif step == "0":
         return "q2"
+    else:
+        return "Invalid state"
+
+
+def stateq1q3(step):
+    if step == "1":
+        return "q4"
+    elif step == "0":
+        return "q3"
     else:
         return "Invalid state"
 
@@ -54,6 +65,8 @@ def stateeval(state, delta):
         return state3(delta)
     elif state == "q4":
         return state4(delta)
+    elif state == "q1q3":
+        return stateq1q3(delta)
     else:
         return "Invalid state"
 
