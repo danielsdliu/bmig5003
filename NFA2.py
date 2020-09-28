@@ -77,56 +77,57 @@ def nfa(stringi, state):
         return False, stringi, steps
 
 
-# Takes our input
-string = str(input("Enter your input string: \n"))
+if __name__ == "__main__":
+    # Takes our input
+    string = str(input("Enter your input string: \n"))
 
-# Trim any spaces and end lines
-string = string.replace(" ", "")
-string = string.replace("\n", "")
+    # Trim any spaces and end lines
+    string = string.replace(" ", "")
+    string = string.replace("\n", "")
 
-# start state
-start = "q1"
-r = 0
+    # start state
+    start = "q1"
+    r = 0
 
-# array to capture all possible endings.
-possibleendings = [[nfa(string, start), r]]
+    # array to capture all possible endings.
+    possibleendings = [[nfa(string, start), r]]
 
-# checks to see if your first step can be an epsilon step.  I think this could be worked into the next part somehow.
-if epsilon1(start):
-    possibleendings.append([nfa(string, "q3"), r])
+    # checks to see if your first step can be an epsilon step.  I think this could be worked into the next part somehow.
+    if epsilon1(start):
+        possibleendings.append([nfa(string, "q3"), r])
 
-# this essentially looks for any other instances of states that can can an epsilon step then adds two possibilities:
-# one where it takes the step "q3" and one where it does not and remains at "q1".
-try:
-    while r < len(possibleendings):
-        if possibleendings[r][0][2][1:].index("q1") >= 0:
-            possibleendings.append([nfa(possibleendings[r][0][1][possibleendings[r][0][2][1:].index("q1") + 1:], "q3"),
-                                    str(possibleendings[r][1])])
-            possibleendings.append([nfa(possibleendings[r][0][1][possibleendings[r][0][2][1:].index("q1") + 1:], "q1"),
-                                    str(possibleendings[r][1])])
-            r += 1
+    # this essentially looks for any other instances of states that can can an epsilon step then adds two possibilities:
+    # one where it takes the step "q3" and one where it does not and remains at "q1".
+    try:
+        while r < len(possibleendings):
+            if possibleendings[r][0][2][1:].index("q1") >= 0:
+                possibleendings.append([nfa(possibleendings[r][0][1][possibleendings[r][0][2][1:].index("q1") + 1:], "q3"),
+                                        str(possibleendings[r][1])])
+                possibleendings.append([nfa(possibleendings[r][0][1][possibleendings[r][0][2][1:].index("q1") + 1:], "q1"),
+                                        str(possibleendings[r][1])])
+                r += 1
+            else:
+                r += 1
+    except ValueError:  # at some point you will come across a string that does not have q1 in it.
+        pass
+
+    # prints the results of each branch
+    for r in possibleendings:
+        print(r)
+
+    # Collates all possible accept/reject results
+    outcomes = [i[0][0] for i in possibleendings]
+    t = 0
+
+    # if a true is found, then your string is accepted and it stops checking, otherwise it will print reject.  There's
+    # probably a better way to do this.
+    while t < len(outcomes):
+        if outcomes[t]:
+            print("Your string was accepted.")
+            break
         else:
-            r += 1
-except ValueError:  # at some point you will come across a string that does not have q1 in it.
-    pass
+            t += 1
 
-# prints the results of each branch
-for r in possibleendings:
-    print(r)
-
-# Collates all possible accept/reject results
-outcomes = [i[0][0] for i in possibleendings]
-t = 0
-
-# if a true is found, then your string is accepted and it stops checking, otherwise it will print reject.  There's
-# probably a better way to do this.
-while t < len(outcomes):
-    if outcomes[t]:
-        print("Your string was accepted.")
-        break
-    else:
-        t += 1
-
-if not outcomes[-1]:
-    print("Your string was rejected.")
+    if not outcomes[-1]:
+        print("Your string was rejected.")
 
