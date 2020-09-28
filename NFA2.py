@@ -118,7 +118,8 @@ for r in possibleendings:
 outcomes = [i[0][0] for i in possibleendings]
 t = 0
 
-# if a true is found, then your string is accepted and it stops checking, otherwise it will print reject.
+# if a true is found, then your string is accepted and it stops checking, otherwise it will print reject.  There's
+# probably a better way to do this.
 while t < len(outcomes):
     if outcomes[t]:
         print("Your string was accepted.")
@@ -128,3 +129,4 @@ while t < len(outcomes):
 
 if not outcomes[-1]:
     print("Your string was rejected.")
+
